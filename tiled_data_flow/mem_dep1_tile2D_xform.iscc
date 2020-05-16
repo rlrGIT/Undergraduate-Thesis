@@ -1,0 +1,138 @@
+# let v0, v1, ... vd-1 be tiling hyperplanes 
+# let v0 = [0, 1], v1 = [1, 0]
+# let v0 = [1, 1, 0], v1 = [1, 0, 1], and v2 = [1, -1, -1]  
+# let tau = 8
+
+# just tiling (for tile2D)
+
+#Dtile2D := tile2D * iterationSpace2D;
+#codegen (Dtile2D); 
+
+#show that these have the same memory flow dependencies
+#original code
+
+#    yield(i0, i1)
+#      for (a, b)
+#	A[(a+1)%2][b] = A[a%2][b-1] + A[a%2][b] + A[a%2][b+1] / 3;
+#if x defines a value that y needs, x -> y 
+#take A[a,b] --> A[a-1][b] is a value flow dependence
+
+iterationSpace2D := [T, N] -> { yield[i0, i1] : 1 <= i0 < T and 1 <= i1 < N };
+
+yield2D := [T, N] -> { yield[i0, i1] -> exe[a, b] : a = i0 and b = i1 };
+
+#exeToRead  := [T, N] -> { exe[a, b] -> A[a%2, b - 1] }; #copy from subscripts of read
+
+exeToRead  := [T, N] -> { exe[a, b] -> A[a%2, b - 1] }; #copy from subscripts of read
+print("Inverted read: "); exeToRead^-1;
+exeToWrite := [T, N] -> { exe[a, b] -> A[(a + 1)%2, b] }; #copy from subscripts of write
+
+currentFlow := (exeToWrite . (exeToRead^-1));
+print("Current flow: "); currentFlow;
+boundCross2D := unwrap((yield2D(iterationSpace2D) cross yield2D(iterationSpace2D)));
+boundCross2D;
+boundCF2D := boundCross2D * currentFlow; 
+
+#forward2DYield := [T, N] -> { yield[i0, i1] -> yield[i0', i1'] : (i0 < i0') or (i0 = i0' and i1 < i1') };
+
+#forward2D := yield2D^-1 . forward2DYield . yield2D; 
+
+forward2D := [T, N] -> { exe[a, b] -> exe[a', b'] : a < a' or (a = a' and b < b') };
+
+forwardBoundCF2D := boundCF2D * forward2D;   # memory-based flow dep. in loop-body space (i.e., exe[a,b])
+print("printing original iteration space memory flow dependence (CF)"); forwardBoundCF2D;
+
+
+# this is the tiling that yields the transformed iteration space - from Bertolacci et al. 
+tile2D := { yield[i0, i1] -> yield[c0, c1, i0, i1] : 
+		exists r0, r1 :
+		(0 <= r0 < 8) and 
+		(8*c0 + r0 = 0*i0 + 1*i1) and
+		(0 <= r1 < 8) and 
+		(8*c1 + r1 = 1*i0 + 0*i1) 
+};
+
+
+
+# apply tiling to the iteration space 
+#tiledSpace := tile2D * iterationSpace2D;
+#tiledSpace;
+
+
+# for any given tn there is particular space we want to traverse
+# T24 := [T, N] -> { exe[i0, i1] -> yield[c0, c1, c2, c3] : i0 = c2 and i1 = c3 }; #from the two yield expressions should be able to build this from two yields
+
+
+#transformed code
+#for (int c0 = 0; c0 <= floord(N - 1, 8); c0 += 1)
+#  for (int c1 = 0; c1 <= floord(T - 1, 8); c1 += 1)
+#    for (int c2 = 8 * c1; c2 <= min(T - 1, 8 * c1 + 7); c2 += 1)
+#      for (int c3 = 8 * c0; c3 <= min(N - 1, 8 * c0 + 7); c3 += 1)
+
+#        yield(c2, c3)
+#          for (a, b)
+#            A[a + 1, b] = (A[a][b-1] + A[a][b] + A[a][b+1]) / 3;
+
+#wasn't working with this one 
+### iterationSpace4D := [T, N] -> { yield[c0, c1, c2, c3] : 
+### 				0 < c0 <= floord(N - 1, 8) and
+### 				0 < c1 <= floord(T - 1, 8) and
+### 				8 * c1 < c2 <= min(T - 1, 8 * c1 + 7) and
+### 				8 * c0 < c3 <= min(N - 1, 8 * c0 + 7) 
+### };
+
+# as yielded by tile2D * iterationSpace2D
+iterationSpace4D := [T, N] -> { yield[c0, c1, c2, c3] : 
+				1 <= c2 < T and 
+				1 <= c3 < N and 
+				-7 + c3 <= 8 * c0 <= c3 and 
+				-7 + c2 <= 8 * c1 <= c2 };
+
+yield4D := [T, N] ->  { yield[c0, c1, c2, c3] -> exe[a, b] : a = c2 and b = c3 };
+
+exeToRead4D  := exeToRead;  # it's from the loop body, must be the same.: [T, N] -> { exe[a, b] -> A[a-1, b] };
+exeToWrite4D := exeToWrite; # [T, N] -> { exe[a, b] -> A[a, b] }; #copy from subscripts of write
+
+#makes sense to understand this from perspective of exe space
+currentFlow4D := (exeToWrite4D . (exeToRead4D^-1));
+
+boundCross4D := unwrap((yield4D(iterationSpace4D) cross yield4D(iterationSpace4D)));
+
+boundCF4D := boundCross4D * currentFlow4D;
+# forward in time relation defines the order of yields - only really makes sense in yield space - so yield -> yield
+forward4DYield := [T, N] -> { yield[c0, c1, c2, c3] -> yield[c0', c1', c2', c3'] : (c0 < c0')
+					or (c0 = c0' and c1 < c1')
+					or (c0 = c0' and c1 = c1' and c2 < c2')
+					or (c0 = c0' and c1 = c1' and c2 = c2' and c3 < c3')
+};				
+
+
+#forward4D := yield4D^-1 . forward4DYield . yield4D; 
+
+forward4D := forward2D; 
+
+forwardBoundCF4D := boundCF4D * forward4D;
+print("printing tiled iteration space memory "); forwardBoundCF4D;
+
+# difference of relations (domain and codomain)
+Diff1:= forwardBoundCF4D - forwardBoundCF2D;
+Diff2:= forwardBoundCF2D - forwardBoundCF4D;
+print("printing relational differences:");
+print("4d space minus 2d space: "); Diff1;
+print("2d space minus 4d space: "); Diff2;
+
+### limit := [T, N] -> { exe[a, b] -> exe[c, d] : 2<=T<=5 and 4<=N<=5 };
+### sample(Diff2 * limit);
+### badone := [T, N] -> { exe[0, 4] -> exe[1, 4] : T=3 and N=5 } ;
+### print("is badone in the diff?"); Diff2 * badone;
+### print("is badone in the forwardBoundCF4D?"); forwardBoundCF4D* badone;
+### print("is badone in the forwardBoundCF2D?"); forwardBoundCF2D* badone;
+### 
+### # qhy not in 4D?
+### print("is badone in the forward4D?"); forward4D* badone;
+### print("is badone in the BoundCF4D?"); boundCF4D* badone;
+
+### value and memoy: AmIReal := [T, N] -> { exe[0, 3] -> exe[1, 3] : T=5 and N=5 } ;
+AmIReal := [T, N] -> { exe[0, 3] -> exe[4, 3] : T = 5 and N = 5 } ;
+print("is AmIReal in the forwardBoundCF4D?"); forwardBoundCF4D * AmIReal;
+print("is AmIReal in the forwardBoundCF2D?"); forwardBoundCF2D * AmIReal;

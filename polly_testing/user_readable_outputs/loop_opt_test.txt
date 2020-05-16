@@ -1,0 +1,127 @@
+Printing analysis 'Polly - Calculate dependences' for region: '%0 => <Function Return>' in function 'main':
+Printing analysis 'Polly - Calculate dependences' for region: '%2 => <Function Return>' in function 'min':
+Printing analysis 'Polly - Calculate dependences' for region: '%2 => <Function Return>' in function 'max':
+Printing analysis 'Polly - Calculate dependences' for region: '%54 => %75' in function 'stencil_original':
+	RAW dependences:
+		[p_0, p_1, p_2] -> { Stmt0[i0] -> Stmt0[o0] : p_2 > p_1 and i0 >= 0 and o0 > i0 and -2 - p_1 + p_2 + 2i0 <= 2o0 <= 2 - p_1 + p_2 + 2i0 and 2o0 <= -4 + p_0; Stmt0[i0] -> Stmt0[1 + i0] : p_1 <= p_2 <= 3 + p_1 and i0 >= 0 and 2i0 <= -6 + p_0 }
+	WAR dependences:
+		[p_0, p_1, p_2] -> { Stmt0[i0] -> Stmt0[o0] : exists (e0: i0 >= 0 and o0 > i0 and -2 + p_1 - p_2 + 2i0 <= 2o0 <= 2 + p_1 - p_2 + 2i0 and 2o0 <= -4 + p_0 and e0 >= 2 + p_2 + i0 and p_1 + p_2 + 2i0 <= 2e0 <= 4 + p_1 + p_2 + 2i0 and 2e0 <= -2 + p_0 + 2p_2) }
+	WAW dependences:
+		[p_0, p_1, p_2] -> {  }
+	Reduction dependences:
+		[p_0, p_1, p_2] -> {  }
+	Transitive closure of reduction dependences:
+		[p_0, p_1, p_2] -> {  }
+Printing analysis 'Polly - Calculate dependences' for region: '%98 => .loopexit' in function 'stencil_original':
+Printing analysis 'Polly - Calculate dependences' for region: '%98 => %122' in function 'stencil_original':
+	RAW dependences:
+		[p_0, p_1, p_2, p_3] -> { Stmt0[i0] -> Stmt0[o0] : (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and o0 > i0 and -1 - p_2 + p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= 1 - p_2 + p_3 + 2i0; Stmt0b[i0] -> Stmt0[o0] : (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and o0 > i0 and -p_2 + p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= 2 - p_2 + p_3 + 2i0; Stmt0b[i0] -> Stmt0b[o0] : (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and o0 > i0 and -1 - p_2 + p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= 1 - p_2 + p_3 + 2i0; Stmt0[i0] -> Stmt0b[o0] : (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and o0 >= i0 and -2 - p_2 + p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= -p_2 + p_3 + 2i0 }
+	WAR dependences:
+		[p_0, p_1, p_2, p_3] -> { Stmt0[i0] -> Stmt0[o0] : (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and -1 + p_2 - p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= 1 + p_2 - p_3 + 2i0 and (p_3 <= -2 + p_2 or (exists (e0: o0 > i0 and e0 < p_1 + p_3 and 2e0 >= p_0 + p_1 + p_2 + p_3 + 2i0 and 3 + p_0 + p_1 + 2p_3 + 2i0 <= 2e0 <= 2 + p_0 + p_1 + p_2 + p_3 + 2i0))); Stmt0[i0] -> Stmt0[1 + i0] : (1 + p_0 + p_1) mod 2 = 0 and -2 + p_2 <= p_3 < p_2 and i0 >= 0 and 2i0 <= -5 - p_0 + p_1; Stmt0b[i0] -> Stmt0[o0] : (1 + p_0 + p_1) mod 2 = 0 and p_3 < p_2 and i0 >= 0 and p_2 - p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= 2 + p_2 - p_3 + 2i0; Stmt0b[i0] -> Stmt0[1 + i0] : p_3 = p_2 and (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and 2i0 <= -5 - p_0 + p_1; Stmt0b[i0] -> Stmt0b[o0] : (1 + p_0 + p_1) mod 2 = 0 and p_3 <= -3 + p_2 and i0 >= 0 and -1 + p_2 - p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= 1 + p_2 - p_3 + 2i0; Stmt0b[i0] -> Stmt0b[1 + i0] : (1 + p_0 + p_1) mod 2 = 0 and -2 + p_2 <= p_3 < p_2 and i0 >= 0 and 2i0 <= -5 - p_0 + p_1; Stmt0[i0] -> Stmt0b[o0] : (1 + p_0 + p_1) mod 2 = 0 and p_3 <= -3 + p_2 and i0 >= 0 and -2 + p_2 - p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= p_2 - p_3 + 2i0; Stmt0[i0] -> Stmt0b[1 + i0] : p_3 = -2 + p_2 and (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and 2i0 <= -5 - p_0 + p_1; Stmt0[i0] -> Stmt0b[i0] : (1 + p_0 + p_1) mod 2 = 0 and -2 + p_2 <= p_3 <= p_2 and i0 >= 0 and 2i0 <= -3 - p_0 + p_1 }
+	WAW dependences:
+		[p_0, p_1, p_2, p_3] -> {  }
+	Reduction dependences:
+		[p_0, p_1, p_2, p_3] -> {  }
+	Transitive closure of reduction dependences:
+		[p_0, p_1, p_2, p_3] -> {  }
+Printing analysis 'Polly - Calculate dependences' for region: '%95 => %122' in function 'stencil_original':
+Printing analysis 'Polly - Calculate dependences' for region: '%76 => %95' in function 'stencil_original':
+Printing analysis 'Polly - Calculate dependences' for region: '%25 => %122' in function 'stencil_original':
+Printing analysis 'Polly - Calculate dependences' for region: '%25 => .loopexit2' in function 'stencil_original':
+Printing analysis 'Polly - Calculate dependences' for region: '%5 => %125' in function 'stencil_original':
+Printing analysis 'Polly - Calculate dependences' for region: '.split => %125' in function 'stencil_original':
+Printing analysis 'Polly - Calculate dependences' for region: '%3 => <Function Return>' in function 'stencil_original':
+Printing analysis 'Polly - Calculate dependences' for region: '%54 => %75' in function 'stencil_fake_iterator':
+	RAW dependences:
+		[p_0, p_1, p_2] -> { Stmt0[i0] -> Stmt0[o0] : p_2 > p_1 and i0 >= 0 and o0 > i0 and -2 - p_1 + p_2 + 2i0 <= 2o0 <= 2 - p_1 + p_2 + 2i0 and 2o0 <= -4 + p_0; Stmt0[i0] -> Stmt0[1 + i0] : p_1 <= p_2 <= 3 + p_1 and i0 >= 0 and 2i0 <= -6 + p_0 }
+	WAR dependences:
+		[p_0, p_1, p_2] -> { Stmt0[i0] -> Stmt0[o0] : exists (e0: i0 >= 0 and o0 > i0 and -2 + p_1 - p_2 + 2i0 <= 2o0 <= 2 + p_1 - p_2 + 2i0 and 2o0 <= -4 + p_0 and e0 >= 2 + p_2 + i0 and p_1 + p_2 + 2i0 <= 2e0 <= 4 + p_1 + p_2 + 2i0 and 2e0 <= -2 + p_0 + 2p_2) }
+	WAW dependences:
+		[p_0, p_1, p_2] -> {  }
+	Reduction dependences:
+		[p_0, p_1, p_2] -> {  }
+	Transitive closure of reduction dependences:
+		[p_0, p_1, p_2] -> {  }
+Printing analysis 'Polly - Calculate dependences' for region: '%98 => .loopexit' in function 'stencil_fake_iterator':
+Printing analysis 'Polly - Calculate dependences' for region: '%98 => %122' in function 'stencil_fake_iterator':
+	RAW dependences:
+		[p_0, p_1, p_2, p_3] -> { Stmt0[i0] -> Stmt0[o0] : (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and o0 > i0 and -1 - p_2 + p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= 1 - p_2 + p_3 + 2i0; Stmt0b[i0] -> Stmt0[o0] : (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and o0 > i0 and -p_2 + p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= 2 - p_2 + p_3 + 2i0; Stmt0b[i0] -> Stmt0b[o0] : (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and o0 > i0 and -1 - p_2 + p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= 1 - p_2 + p_3 + 2i0; Stmt0[i0] -> Stmt0b[o0] : (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and o0 >= i0 and -2 - p_2 + p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= -p_2 + p_3 + 2i0 }
+	WAR dependences:
+		[p_0, p_1, p_2, p_3] -> { Stmt0[i0] -> Stmt0[o0] : (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and -1 + p_2 - p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= 1 + p_2 - p_3 + 2i0 and (p_3 <= -2 + p_2 or (exists (e0: o0 > i0 and e0 < p_1 + p_3 and 2e0 >= p_0 + p_1 + p_2 + p_3 + 2i0 and 3 + p_0 + p_1 + 2p_3 + 2i0 <= 2e0 <= 2 + p_0 + p_1 + p_2 + p_3 + 2i0))); Stmt0[i0] -> Stmt0[1 + i0] : (1 + p_0 + p_1) mod 2 = 0 and -2 + p_2 <= p_3 < p_2 and i0 >= 0 and 2i0 <= -5 - p_0 + p_1; Stmt0b[i0] -> Stmt0[o0] : (1 + p_0 + p_1) mod 2 = 0 and p_3 < p_2 and i0 >= 0 and p_2 - p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= 2 + p_2 - p_3 + 2i0; Stmt0b[i0] -> Stmt0[1 + i0] : p_3 = p_2 and (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and 2i0 <= -5 - p_0 + p_1; Stmt0b[i0] -> Stmt0b[o0] : (1 + p_0 + p_1) mod 2 = 0 and p_3 <= -3 + p_2 and i0 >= 0 and -1 + p_2 - p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= 1 + p_2 - p_3 + 2i0; Stmt0b[i0] -> Stmt0b[1 + i0] : (1 + p_0 + p_1) mod 2 = 0 and -2 + p_2 <= p_3 < p_2 and i0 >= 0 and 2i0 <= -5 - p_0 + p_1; Stmt0[i0] -> Stmt0b[o0] : (1 + p_0 + p_1) mod 2 = 0 and p_3 <= -3 + p_2 and i0 >= 0 and -2 + p_2 - p_3 + 2i0 <= 2o0 <= -3 - p_0 + p_1 and 2o0 <= p_2 - p_3 + 2i0; Stmt0[i0] -> Stmt0b[1 + i0] : p_3 = -2 + p_2 and (1 + p_0 + p_1) mod 2 = 0 and i0 >= 0 and 2i0 <= -5 - p_0 + p_1; Stmt0[i0] -> Stmt0b[i0] : (1 + p_0 + p_1) mod 2 = 0 and -2 + p_2 <= p_3 <= p_2 and i0 >= 0 and 2i0 <= -3 - p_0 + p_1 }
+	WAW dependences:
+		[p_0, p_1, p_2, p_3] -> {  }
+	Reduction dependences:
+		[p_0, p_1, p_2, p_3] -> {  }
+	Transitive closure of reduction dependences:
+		[p_0, p_1, p_2, p_3] -> {  }
+Printing analysis 'Polly - Calculate dependences' for region: '%95 => %122' in function 'stencil_fake_iterator':
+Printing analysis 'Polly - Calculate dependences' for region: '%76 => %95' in function 'stencil_fake_iterator':
+Printing analysis 'Polly - Calculate dependences' for region: '%25 => %122' in function 'stencil_fake_iterator':
+Printing analysis 'Polly - Calculate dependences' for region: '%25 => .loopexit2' in function 'stencil_fake_iterator':
+Printing analysis 'Polly - Calculate dependences' for region: '%5 => %125' in function 'stencil_fake_iterator':
+Printing analysis 'Polly - Calculate dependences' for region: '.split => %125' in function 'stencil_fake_iterator':
+Printing analysis 'Polly - Calculate dependences' for region: '%3 => <Function Return>' in function 'stencil_fake_iterator':
+Printing analysis 'Polly - Calculate dependences' for region: '%128 => .loopexit' in function 'stencil_fake_iterator_useless':
+Printing analysis 'Polly - Calculate dependences' for region: '%128 => %124' in function 'stencil_fake_iterator_useless':
+	RAW dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> Stmt0[o0] : i0 >= 0 and o0 > i0 and -1 - p_3 + p_4 + i0 <= o0 <= 30 - p_0 + 32p_2 and o0 <= -2 - p_0 + p_1 and o0 <= 1 - p_3 + p_4 + i0 }
+	WAR dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> Stmt0[o0] : i0 >= 0 and o0 >= -1 + p_3 - p_4 + i0 and i0 < o0 <= 30 - p_0 + 32p_2 and o0 <= -2 - p_0 + p_1 and o0 <= 1 + p_3 - p_4 + i0 }
+	WAW dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> {  }
+	Reduction dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> {  }
+	Transitive closure of reduction dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> {  }
+Printing analysis 'Polly - Calculate dependences' for region: '%100 => %121' in function 'stencil_fake_iterator_useless':
+	RAW dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> Stmt0[o0] : p_4 > p_3 and i0 >= 0 and o0 > i0 and -2 - p_3 + p_4 + 2i0 <= 2o0 <= 29 - p_0 + 32p_2 and 2o0 <= -3 - p_0 + p_1 and 2o0 <= 2 - p_3 + p_4 + 2i0; Stmt0[i0] -> Stmt0[1 + i0] : p_3 <= p_4 <= 3 + p_3 and i0 >= 0 and 2i0 <= 27 - p_0 + 32p_2 and 2i0 <= -5 - p_0 + p_1 }
+	WAR dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> Stmt0[o0] : exists (e0: i0 >= 0 and o0 > i0 and -2 + p_3 - p_4 + 2i0 <= 2o0 <= 29 - p_0 + 32p_2 and 2o0 <= -3 - p_0 + p_1 and 2o0 <= 2 + p_3 - p_4 + 2i0 and e0 > p_0 + p_4 + i0 and -2 + 2p_0 + p_3 + p_4 + 2i0 <= 2e0 <= 29 + p_0 + 32p_2 + 2p_4 and 2e0 <= -3 + p_0 + p_1 + 2p_4 and 2e0 <= 2 + 2p_0 + p_3 + p_4 + 2i0) }
+	WAW dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> {  }
+	Reduction dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> {  }
+	Transitive closure of reduction dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> {  }
+Printing analysis 'Polly - Calculate dependences' for region: '%78 => %124' in function 'stencil_fake_iterator_useless':
+Printing analysis 'Polly - Calculate dependences' for region: '%45 => %124' in function 'stencil_fake_iterator_useless':
+Printing analysis 'Polly - Calculate dependences' for region: '%45 => %41' in function 'stencil_fake_iterator_useless':
+Printing analysis 'Polly - Calculate dependences' for region: '%24 => .loopexit1' in function 'stencil_fake_iterator_useless':
+Printing analysis 'Polly - Calculate dependences' for region: '%14 => %21' in function 'stencil_fake_iterator_useless':
+Printing analysis 'Polly - Calculate dependences' for region: '%14 => .loopexit2' in function 'stencil_fake_iterator_useless':
+Printing analysis 'Polly - Calculate dependences' for region: '%6 => %143' in function 'stencil_fake_iterator_useless':
+Printing analysis 'Polly - Calculate dependences' for region: '.split => %143' in function 'stencil_fake_iterator_useless':
+Printing analysis 'Polly - Calculate dependences' for region: '%3 => <Function Return>' in function 'stencil_fake_iterator_useless':
+Printing analysis 'Polly - Calculate dependences' for region: '%123 => .loopexit' in function 'stencil_fake_iterator_wrong':
+Printing analysis 'Polly - Calculate dependences' for region: '%123 => %119' in function 'stencil_fake_iterator_wrong':
+	RAW dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> Stmt0[o0] : i0 >= 0 and o0 > i0 and -1 - p_3 + p_4 + i0 <= o0 <= 30 - p_0 + 32p_2 and o0 <= -2 - p_0 + p_1 and o0 <= 1 - p_3 + p_4 + i0 }
+	WAR dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> Stmt0[o0] : i0 >= 0 and o0 >= -1 + p_3 - p_4 + i0 and i0 < o0 <= 30 - p_0 + 32p_2 and o0 <= -2 - p_0 + p_1 and o0 <= 1 + p_3 - p_4 + i0 }
+	WAW dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> {  }
+	Reduction dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> {  }
+	Transitive closure of reduction dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> {  }
+Printing analysis 'Polly - Calculate dependences' for region: '%97 => %118' in function 'stencil_fake_iterator_wrong':
+	RAW dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> Stmt0[o0] : p_4 > p_3 and i0 >= 0 and o0 > i0 and -2 - p_3 + p_4 + 2i0 <= 2o0 <= 29 - p_0 + 32p_2 and 2o0 <= -3 - p_0 + p_1 and 2o0 <= 2 - p_3 + p_4 + 2i0; Stmt0[i0] -> Stmt0[1 + i0] : p_3 <= p_4 <= 3 + p_3 and i0 >= 0 and 2i0 <= 27 - p_0 + 32p_2 and 2i0 <= -5 - p_0 + p_1 }
+	WAR dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> Stmt0[o0] : exists (e0: i0 >= 0 and o0 > i0 and -2 + p_3 - p_4 + 2i0 <= 2o0 <= 29 - p_0 + 32p_2 and 2o0 <= -3 - p_0 + p_1 and 2o0 <= 2 + p_3 - p_4 + 2i0 and e0 > p_0 + p_4 + i0 and -2 + 2p_0 + p_3 + p_4 + 2i0 <= 2e0 <= 29 + p_0 + 32p_2 + 2p_4 and 2e0 <= -3 + p_0 + p_1 + 2p_4 and 2e0 <= 2 + 2p_0 + p_3 + p_4 + 2i0) }
+	WAW dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> {  }
+	Reduction dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> {  }
+	Transitive closure of reduction dependences:
+		[p_0, p_1, p_2, p_3, p_4] -> {  }
+Printing analysis 'Polly - Calculate dependences' for region: '%60 => %119' in function 'stencil_fake_iterator_wrong':
+Printing analysis 'Polly - Calculate dependences' for region: '%60 => .loopexit1' in function 'stencil_fake_iterator_wrong':
+Printing analysis 'Polly - Calculate dependences' for region: '%21 => %56' in function 'stencil_fake_iterator_wrong':
+Printing analysis 'Polly - Calculate dependences' for region: '%21 => .loopexit3' in function 'stencil_fake_iterator_wrong':
+Printing analysis 'Polly - Calculate dependences' for region: '%15 => %139' in function 'stencil_fake_iterator_wrong':
+Printing analysis 'Polly - Calculate dependences' for region: '%13 => %139' in function 'stencil_fake_iterator_wrong':
+Printing analysis 'Polly - Calculate dependences' for region: '%13 => .loopexit4' in function 'stencil_fake_iterator_wrong':
+Printing analysis 'Polly - Calculate dependences' for region: '.split => %138' in function 'stencil_fake_iterator_wrong':
+Printing analysis 'Polly - Calculate dependences' for region: '%3 => <Function Return>' in function 'stencil_fake_iterator_wrong':

@@ -1,0 +1,12 @@
+memDep1 := [T, N] -> { exe[a, b] -> exe[a', b' = 1 + b] : (1 + a + a') mod 2 = 0 and 0 < a < T and 0 < b <= -2 + N and a' > a and 0 < a' < T }; 
+
+memDep2 := [T, N] -> { exe[a, b] -> exe[a', b' = -1 + b] : (1 + a + a') mod 2 = 0 and 0 < a < T and 2 <= b < N and a' > a and 0 < a' < T }; 
+
+outDep1 := [T, N] -> { exe[a, b] -> exe[a', b' = b] : (a + a') mod 2 = 0 and 0 <= a < T and 0 <= b < N and a' > a and 0 <= a' < T };
+
+valFlow := memDep2 - (outDep1 * memDep1);
+valFlow;
+
+valFlow1 := memDep1 - (outDep1 * memDep1);
+valFlow1;
+

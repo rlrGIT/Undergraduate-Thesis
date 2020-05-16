@@ -1,0 +1,11 @@
+Original
+[p_0, p_1, p_2] -> { Stmt0[i0] -> Stmt0[o0] : p_2 > p_1 and i0 >= 0 and o0 > i0 and -2 - p_1 + p_2 + 2i0 <= 2o0 <= 2 - p_1 + p_2 + 2i0 and 2o0 <= -4 + p_0; Stmt0[i0] -> Stmt0[1 + i0] : p_1 <= p_2 <= 3 + p_1 and i0 >= 0 and 2i0 <= -6 + p_0 }
+
+Fake_Iterator
+[p_0, p_1, p_2] -> { Stmt0[i0] -> Stmt0[o0] : p_2 > p_1 and i0 >= 0 and o0 > i0 and -2 - p_1 + p_2 + 2i0 <= 2o0 <= 2 - p_1 + p_2 + 2i0 and 2o0 <= -4 + p_0; Stmt0[i0] -> Stmt0[1 + i0] : p_1 <= p_2 <= 3 + p_1 and i0 >= 0 and 2i0 <= -6 + p_0 }
+
+Fake_Iterator_Useless
+[p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> Stmt0[o0] : i0 >= 0 and o0 > i0 and -1 - p_3 + p_4 + i0 <= o0 <= 30 - p_0 + 32p_2 and o0 <= -2 - p_0 + p_1 and o0 <= 1 - p_3 + p_4 + i0 }
+
+Fake_Iterator_Wrong
+[p_0, p_1, p_2, p_3, p_4] -> { Stmt0[i0] -> Stmt0[o0] : i0 >= 0 and o0 > i0 and -1 - p_3 + p_4 + i0 <= o0 <= 30 - p_0 + 32p_2 and o0 <= -2 - p_0 + p_1 and o0 <= 1 - p_3 + p_4 + i0 }

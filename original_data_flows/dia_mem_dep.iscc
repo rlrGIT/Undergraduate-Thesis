@@ -1,0 +1,23 @@
+# original iteration space 
+ISO := [T, I, J] -> { comp[t, i, j] : 0 < t <= T and 0 < i < I-1 and 0 < j < J-1 };
+
+# diamond tiled iteraton space with wavefront parallelism 
+DTwavefront := { yield[k0, k1, k2, r0, r1, r2] -> ditr[(k0 + k1 + k2), k1, k2, r0, r1, r2] };
+
+# diamond tiled iteration space, not iterating over the wavefront
+DTnowavefront := [T, I, J] -> { comp[t, i, j] ->  yield[k0, k1, k2, r0, r1, r2] :
+		 (k0 * 4) + r0 = t + i and
+		 (k1 * 4) + r1 = t + j and
+		 (k2 * 4) + r2 = t - i - j and 
+		 0 <= r0 < 4 and 
+		 0 <= r1 < 4 and 
+		 0 <= r2 < 4 }; #tau = 4
+
+# intersect the domain of the DTnowavefront map with the ISO set
+DT := DTnowavefront * ISO;
+DT;
+# apply diamond tiling with wavefront relation to the DTnowavefront transformed iteration space (apply map to set)
+DT1 := DTwavefront * DT;
+DT1;
+codegen (DT1); 
+

@@ -1,0 +1,24 @@
+# memory flow dependence, which is also a value flow dependence
+# A[(a+1)%2][b] = A[(a%2)][b-1] + A[(a%2)][b] + A[(a%2)][b+1] 
+
+yield := [T, N] -> { exe[i0, i1] -> exe[a, b] : i0 = a and i1 = b };
+T24 := [T, N] -> { exe[i0, i1] -> yield[c0, c1, c2, c3] : i0 = c2 and i1 = c3 }; #from the two yield expressions should be able to build this from two yields
+
+conversion := yield . T24;
+
+
+memDep1 := [T, N] -> { exe[a, b] -> exe[a' = 1 + a, b' = -1 + b] : 0 < a <= -2 + T and 2 <= b < N };
+#[T, N] -> { exe[a, b] -> exe[a', b' = b] : (a + a') mod 2 = 0 and 0 <= a < T and 0 <= b < N and a' > a and 0 <= a' < T };
+# memory flow dependence 
+memDep2 := [T, N] -> { exe[a, b] -> exe[a' = 1 + a, b' = 1 + b] : 0 < a <= -2 + T and 0 < b <= -2 + N };
+#[T, N] -> { exe[a, b] -> exe[a', b' = b] : (1 + a + a') mod 2 = 0 and 0 <= a < T and 0 <= b < N and a' > a and 0 <= a' < T };
+# output flow dependence exeToWrite == exeToRead == { exe[a, b] -> A[(a%2)][b] };
+outDep1 := [T, N] -> { };
+#outDep1 := [T, N] -> { exe[a, b] -> exe[a', b' = b] : (a + a') mod 2 = 0 and 0 <= a < T and 0 <= b < N and a' > a and 0 <= a' < T };
+
+# the difference of the intersection of a memory dependence and an output dependence should be a value flow dependence
+dfv2 := memDep1 - (memDep2 * outDep1);
+dfv3 := memDep2 - (memDep1 * outDep1);
+# in this case, it happened to be the same as the original memory dependence 
+print("Calculated value flow dependence"); dfv2 . T24;
+dfv2 . conversion;

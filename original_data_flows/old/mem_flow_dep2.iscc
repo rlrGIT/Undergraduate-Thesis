@@ -1,0 +1,44 @@
+# A[t][i] = A[t][i-1] + A[t][i] + A[t][i+1] / 3;
+
+# initialize a generic descriptor (free parameter) [T, N] of the iteration domain, with 
+# constraints described in the yield statement of a Chapel iterator.
+IS := [T, N] -> { yield[a, b] : 100 <= b < T + 100 and 11 <= a < N + 9 };
+
+# describe a mapping of a yield instance of an iterator to corresponding indices
+# that will be used during a statement execution i.e. M : [a, b] -> [t, i] 
+# note, such a mapping is defined by the constraints in the braces 
+YEXP := [T, N] -> { yield[a, b] -> exe[t, i] : t = b - 100 and i = a - 10 }; 
+
+# define a mapping of an execution index to a write access of array A
+W := [T, N] -> { exe[t, i] -> A[t + 1, i] };
+
+# define a mapping of an execution index a read access of array A
+R3 := [T, N] -> { exe[t, i] -> A[t, i + 1] }; 
+
+# define current flow (from source to sink) of a write to when it is read, or 
+# from the direction of definition to use (use of composition of two relations)
+CF3 := (W . (R3^-1));
+
+# unwrap the mapping relation produced - done in practice use ISCC
+# the cartesian produce of the composition of two relations defines all vectors that
+# access the same memory cell whose endpoints are enclosed within the iteration space
+# produced by YEXP(IS) - application of a mapping to a set.
+B := unwrap((YEXP(IS) cross YEXP(IS)));
+
+# set of all current flow vectors that access the same memory cell with respect to the
+# third memory access in the loop body
+CF3B := B * CF3;
+
+# define "forward in time" constraints on a mapping of one instance of execution
+# iterations to another - i.e., define when an access to the same memory cell is 
+# legal
+FIT := [T, N] -> { exe[t, i] -> exe[t', i'] : (t < t') or (t = t' and i < i') };
+
+# create a new mapping whose domain and range are defined as the intersection of the
+# mapping of current flow arrows, and forward in time arrows bound by constraints. 
+CF3BF := CF3B * FIT;
+
+# print the found set
+CF3BF;
+
+codegen CF3BF;

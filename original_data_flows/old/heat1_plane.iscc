@@ -1,0 +1,19 @@
+IS := [T, N] -> { Y[b, a] : 100 <= b < T + 100 and 11 <= a < N + 9 };
+YEXP := [T, N] -> { Y[b, a] -> E[t, i] : t = b - 100 and i = a - 10 }; 
+# when iterator reaches [b, a] what will be executed in the main program (what [t, i])
+W := [T, N] -> { E[t, i] -> A[t + 1, i] };
+# when we execute [t, i], what memory space do we write to in the array A? 
+R3 := [T, N] -> { E[t, i] -> A[t, i + 1] }; 
+# what do we read from the third read in the loop body
+CF3 := (W . (R3^-1));
+B := unwrap((YEXP(IS) cross YEXP(IS)));
+# set of all arrows using the same memory cell, whose endpoints are in the iteration space
+CF3B := B * CF3;
+# define when current flow (write arrows) access the same memory cell 
+FIT := [T, N] -> { E[t, i] -> E[t', i'] : (t < t') or (t = t' and i < i') };
+# describes a forward in time constraint, or that dependencies remain read in order 
+CF3BF := CF3B * FIT;
+# take the intersection of the current flow arrows for write 
+CF3BF;
+
+# do this for mod 2 

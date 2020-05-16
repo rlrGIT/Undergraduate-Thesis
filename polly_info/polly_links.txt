@@ -1,0 +1,15 @@
+Home: http://polly.llvm.org/
+LLVM: http://www.llvm.org/
+
+High-Level Overview: 
+http://polly.llvm.org/docs/Architecture.html#polly-in-the-llvm-pass-pipeline
+
+Using Polly with Clang: 
+http://releases.llvm.org/7.0.0/tools/polly/docs/UsingPollyWithClang.html
+
+Using Polly Manually:
+http://polly.llvm.org/docs/HowToManuallyUseTheIndividualPiecesOfPolly.html
+
+Installing Graphviz/Dot:
+https://askubuntu.com/questions/917030/how-to-install-pydot-and-graphviz
+

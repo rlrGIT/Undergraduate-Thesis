@@ -1,0 +1,17 @@
+# from iscc < mem_flow_dep2.iscc  ... this is for code with array subscripts (t+1), i.e., the "single-assignment" version
+deltamf_sa := [T, N] -> { exe[t, i] -> exe[t' = 1 + t, i' = -1 + i] : 0 <= t <= -2 + T and 2 <= i <= -2 + N };
+
+# from iscc < mem_flow_dep1.iscc  ... this is for the code with the (t+1)%2 subscripts for the write
+deltamf := [T, N] -> { exe[t, i] -> exe[t', i' = -1 + i] : (1 + t + t') mod 2 = 0 and 0 <= t < T and 2 <= i <= -2 + N and t' > t and 0 <= t' < T };
+
+# from iscc < output_dep.iscc     ... this is for the code with the (t+1)%2 subscripts for the write
+deltao  := [T, N] -> { exe[t, i] -> exe[t', i' = i] : (t + t') mod 2 = 0 and 0 <= t < T and 0 < i <= -2 + N and t' > t and 0 <= t' < T };
+
+deltavf := deltamf - (deltao . deltamf);
+
+print("memory=value for single-assignment: "); deltamf_sa;
+print("value-based  flow with %2 storage:  "); deltavf;
+print("Are those the same?"); deltamf_sa = deltavf;
+print(" ");
+print("memory-based flow with %2 storage:  "); deltamf;
+codegen (deltavf);

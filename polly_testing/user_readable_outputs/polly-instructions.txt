@@ -1,0 +1,91 @@
+/*
+Russell Rivera
+23/02/20
+*/
+
+Using the Polly with Clang and Opt: A Spiritual Guide
+
+About Polly: Polly is an LLVM-IR to LLVM-IR optimizer based on the 
+Polyhedral model that is used to improve data-locality and loop 
+optimizations. Polly can be used with clang in order to produce 
+optimized code during compile time, but cannot accept C code
+directly. Instead, source C code must be compiled using clang into
+LLVM-IR, (with a .ll extension) before being passed to Polly. This
+guide is intended to show how to extract dependencies by manually 
+compiling and invoking clang and polly using the opt tool.
+
+
+#TRANSLATION to LLVM-IR:
+
+> clang <c_file.c> -c -O3 -mllvm -polly -mllvm -polly-dump-before-file=polly_input.ll
+
+outputs the LLVM-IR file that is preoptimized according to -O3 specs by
+polly. The -c option here only allows for preprocessing, compiling, and 
+assembling steps. 
+
+This command will produce two files - a <name.o> file and the file named
+in the actual command. The .ll file is human readable. 
+
+Any .ll file produced by the command above can then be used by the opt
+tool. Additionally, the command:
+
+> clang -S -emit-llvm <c_file.c> -o <c_file.s> 
+
+can also be used for LLVM-IR generation without invoking any of polly's
+automatic or default behaviors. This should be used for when you want 
+to manually execute polly processes individually. After the above 
+command, the llvm produced must be converted to canonical form -
+
+> opt -S -polly-canonicalize <c_file.s> > <c_file.preopt.ll>
+
+Now, you should be able to invoke polly options that show SCoP's, an
+acronym that I cannot find the meaning of despite hours of reading
+documentation. I believe it stands for "Source Code oPtimization",
+but there is no Polly option to check. 
+
+To show whether polly has detected any SCoP's, we can run the command:
+
+> opt -polly-ast -analyze -q <c_file.preopt.ll> -polly-process-unprofitable
+
+#DEPENDENCY Analysis
+
+To show the dependencies found during optimization, we can run the command:
+
+> opt -polly-dependences -analyze <c_file.preopt.ll> -polly-process-unprofitable
+
+Note that the use of -polly-process-unprofitable in order to invoke optimizations on loops
+that polly does not consider worth the overhead of optimization, such as shallow loop
+nests. The analyze flag causes analysis to be made, but for no optimizations to be completed.
+It only invokes preprocessing, analysis, and compiling. 
+
+To check out more information on the SCoP's you can invoke:
+
+> opt -polly-scops -analyze <c_file.preopt.ll> -polly-process-unprofitable
+
+
+List of all commands:
+
+> clang <c_file.c> -c -O3 -mllvm -polly -mllvm -polly-dump-before-file=polly_input.ll
+
+// -O3 is necessary
+> clang -O3 -S -emit-llvm <c_file.c> -o <c_file.s> 
+> opt -S -polly-canonicalize <c_file.s> > <c_file.preopt.ll>
+> opt -polly-ast -analyze -q <c_file.preopt.ll> -polly-process-unprofitable
+> opt -polly-dependences -analyze <c_file.preopt.ll> -polly-process-unprofitable
+> opt -polly-scops -analyze <c_file.preopt.ll> -polly-process-unprofitable
+
+What I used to get dependencies:
+
+> clang -O3 -S -mllvm -polly -emit-llvm loop_opt.c
+		---OR---
+> clang -O3 -S -emit-llvm loop_opt.c -o loop_opt.s
+> opt -O3 -S -polly-canonicalize loop_opt.s > loop.preopt.ll
+
+/* Try adding -O3 option to these */ 
+
+> opt -polly-ast -analyze -q loop.preopt.ll -polly-process-unprofitable
+> opt -view-scops -disable-output loop.preopt.ll
+> opt -view-scops-only -disable-output loop.preopt.ll
+> opt -polly-scops -analyze loop.preopt.ll -polly-process-unprofitable
+> opt -polly-dependences -analyze loop.preopt.ll -polly-process-unprofitable
+

@@ -1,0 +1,30 @@
+#consider a 3-dimensional rectangular iteration space of a program
+#such a space is defined by a 3-tuple with appropriate loop bounds
+# let tau = tilesize = 8
+# let v0, v1, v2 be tiling hyperplanes, where:
+# v0 = [1, 1, 0] and v1 = [1, 0, 1] and v2 = [1, -1, -1]
+
+iterationSpace3D := [T, I, J] -> { [i0, i1, i2] :
+			0 <= i0 < T and
+			0 <= i1 < I and
+			0 <= i2 < J };
+
+
+#notice use of 8 as tile size here - we want the remainders to be less than tilesize
+#tau*k0 + r0 = v0 * i0 => tau*k0 + r0 = i0*v0 + i1*v1 + i2*v2 (is the dot product of 
+#the iteration vector and the hyperplane vector)
+
+tile3D := { [i0, i1, i2] -> [k0, k1, k2, i0, i1, i2] :
+		exists r0, r1, r2 :
+		(0 <= r0 < 8) and
+		(8*k0 + r0 = 1*i0 + 1*i1 + 0*i2) and #[i0, i1, i2] dot v0
+		(0 <= r1 < 8) and
+		(8*k1 + r1 = 1*i0 + 0*i1 + 1*i2) and #[i0, i1, i2] dot v1
+		(0 <= r2 < 8) and
+		(8*k2 + r2 = 1*i0 + -1*i1 + -1*i2) }; #[i0, i1, i2] dot v2
+
+dTile3D := tile3D * iterationSpace3D;
+
+codegen (dTile3D);
+
+
