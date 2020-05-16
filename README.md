@@ -1,0 +1,2 @@
+# Undergraduate-Thesis
+This thesis combines a literature review on modern and state of the art techniques for automatic loop parallelizing using the Polyhedral Model, and an experimental design for a program to compare the equivalence of serial and parallel programs. We make use of several prevalent tools in our work: Polly, ISCC, and Clang. Our goal was to determine whether it would be possible to produce a programmer interactive tool that could compare flow dependences between two given programs.  
